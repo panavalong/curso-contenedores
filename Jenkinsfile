@@ -1,4 +1,5 @@
 pipeline {
+    agent any
     stages{
         stage("Primer paso del pipeline"){
             steps{
@@ -15,7 +16,6 @@ pipeline {
                  sh 'echo "Tercer saludo desde el terminal"'
             }
         }
-        stage("Cuarto paso del pipeline"){
             agent {
                 label 'wsl2'
             }
