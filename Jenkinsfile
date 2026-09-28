@@ -33,13 +33,6 @@ pipeline {
             steps{
                  sh 'node -v'
             }
-        }
-        stage("Sexto paso del pipeline"){
-            steps{
-                container("node-tool"){
-                    sh 'node -v'
-                }
-            }
-        }
+        }      
     }
 }
