@@ -1,71 +1,43 @@
 pipeline {
-    //agent any
-    agent {
-        kubernetes {
-            defaultContainer 'node-tool'
-            yamlFile 'agent-node.yaml'
-        }
-    }
     stages{
-        stage("CI - Activacion de pnpm"){
+        stage("Primer paso del pipeline"){
             steps{
-                sh 'corepack enable'
-                sh 'node --version'
-                sh 'pnpm --version'
+                sh 'echo "saludos desde el terminal"'
             }
         }
-        stage("CI - Instalacion de dependencias"){
+         stage("Segundo paso del pipeline"){
             steps{
-                sh 'pnpm install --frozen-lockfile'
+                sh 'echo "segundos saludos desde el terminal"'
             }
         }
-        stage("CI - Revision de Linter"){
+        stage("Tercer paso del pipeline"){
             steps{
-                sh 'pnpm lint'
+                 sh 'echo "Tercer saludo desde el terminal"'
             }
         }
-        stage("CI - Ejecucion de Test"){
+        stage("Cuarto paso del pipeline"){
+            agent {
+                label 'wsl2'
+            }
             steps{
-                 sh 'pnpm test'
+                 sh 'docker ps'
             }
         }
-        stage("CI - Construccion de aplicacion"){
-            steps{
-                 sh 'pnpm build'
-            }
-        }
-        stage("CD - Construccion imagen y upload"){
-            steps{
-                container('buildkit'){
-                    sh '''
-                        export DOCKER_CONFIG=/docker-config/dockerhub
-                        test -s ${DOCKER_CONFIG}/config.json
-
-                        buildctl-daemonless.sh build \
-                        --frontend dockerfile.v0 \
-                        --local context=. \
-                        --local dockerfile=. \
-                        --output type=image,\\\"name=carlosmarind/curso-contenedores:latest,carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
-
-                        export DOCKER_CONFIG=/docker-config/github
-                        test -s ${DOCKER_CONFIG}/config.json
-
-                        buildctl-daemonless.sh build \
-                        --frontend dockerfile.v0 \
-                        --local context=. \
-                        --local dockerfile=. \
-                        --output type=image,\\\"name=ghcr.io/carlosmarind/curso-contenedores:latest,ghcr.io/carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
-                    '''
+        stage("Quinto paso del pipeline"){
+            agent {
+                docker {
+                    label 'wsl2'
+                    image 'node:26'
                 }
             }
-        }
-        stage('CD - Despliegue continuo'){
             steps{
-                container('kubectl-tool'){
-                    sh '''
-                       kubectl -n curso-contenedores set image deployment/curso-contenedores curso-contenedores=ghcr.io/carlosmarind/curso-contenedores:${BUILD_NUMBER}
-                       kubectl -n curso-contenedores rollout status deployment/curso-contenedores
-                    '''
+                 sh 'node -v'
+            }
+        }
+        stage("Sexto paso del pipeline"){
+            steps{
+                container("node-tool"){
+                    sh 'node -v'
                 }
             }
         }
