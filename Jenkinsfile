@@ -1,38 +1,46 @@
 pipeline {
-    agent any
-    stages{
-        stage("Primer paso del pipeline"){
-            steps{
+
+    agent {
+        label 'wsl2'
+    }
+
+    stages {
+
+        stage("Primer paso del pipeline") {
+            steps {
                 sh 'echo "saludos desde el terminal"'
             }
         }
-         stage("Segundo paso del pipeline"){
-            steps{
+
+        stage("Segundo paso del pipeline") {
+            steps {
                 sh 'echo "segundos saludos desde el terminal"'
             }
         }
-        stage("Tercer paso del pipeline"){
-            steps{
-                 sh 'echo "Tercer saludo desde el terminal"'
+
+        stage("Tercer paso del pipeline") {
+            steps {
+                sh 'echo "Tercer saludo desde el terminal"'
             }
         }
-            agent {
-                label 'wsl2'
-            }
-            steps{
-                 sh 'docker ps'
+
+        stage("Cuarto paso del pipeline") {
+            steps {
+                sh 'docker ps'
             }
         }
-        stage("Quinto paso del pipeline"){
+
+        stage("Quinto paso del pipeline") {
             agent {
                 docker {
                     label 'wsl2'
                     image 'node:26'
                 }
             }
-            steps{
-                 sh 'node -v'
+            steps {
+                sh 'node -v'
             }
-        }      
+        }
+
     }
 }
