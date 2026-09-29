@@ -45,7 +45,7 @@ pipeline {
                         --frontend dockerfile.v0 \
                         --local context=. \
                         --local dockerfile=. \
-                        --output type=image,\\\"name=carlosmarind/curso-contenedores:latest,carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
+                        --output type=image,\\\"name=panavalong/curso-contenedores:latest,carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
 
                         export DOCKER_CONFIG=/docker-config/github
                         test -s ${DOCKER_CONFIG}/config.json
@@ -54,7 +54,7 @@ pipeline {
                         --frontend dockerfile.v0 \
                         --local context=. \
                         --local dockerfile=. \
-                        --output type=image,\\\"name=ghcr.io/carlosmarind/curso-contenedores:latest,ghcr.io/carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
+                        --output type=image,\\\"name=ghcr.io/panavalong/curso-contenedores:latest,ghcr.io/carlosmarind/curso-contenedores:${BUILD_NUMBER}\\\",push=true
                     '''
                 }
             }
